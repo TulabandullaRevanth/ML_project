@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - AceClass</title>
+    
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/dashboard-glass.css">
+    <link rel="stylesheet" href="/css/pages-glass.css">
+    <link rel="stylesheet" href="/css/liquid-nav.css">
+    <link rel="stylesheet" href="/css/settings-list.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-body">
+    <!-- Liquid Glass Navigation -->
+    <nav class="liquid-nav">
+        <a href="/" class="nav-brand-liquid">
+            <i class="fas fa-graduation-cap"></i>
+            <span>aceclass</span>
+        </a>
+        
+        <div class="nav-items">
+            <a href="/pages/dashboard.html" class="nav-item-liquid">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="/pages/upload.html" class="nav-item-liquid">
+                <i class="fas fa-upload"></i>
+                <span>Upload</span>
+            </a>
+            <a href="/pages/grading.html" class="nav-item-liquid">
+                <i class="fas fa-check-double"></i>
+                <span>Grading</span>
+            </a>
+            <a href="/pages/analytics.html" class="nav-item-liquid">
+                <i class="fas fa-chart-line"></i>
+                <span>Analytics</span>
+            </a>
+            <a href="/pages/settings.html" class="nav-item-liquid active">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+        
+        <div class="nav-user-liquid">
+            <div class="user-info-liquid">
+                <div class="user-name-liquid">Teacher Name</div>
+                <div class="user-plan-liquid">Pro Plan</div>
+            </div>
+            <div class="user-avatar-liquid" onclick="toggleDropdown()">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="dropdown-liquid" id="userDropdown">
+                <a href="/pages/settings.html" class="dropdown-item-liquid">
+                    <i class="fas fa-cog"></i>
+                    Settings
+                </a>
+                <a href="/" class="dropdown-item-liquid">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Old Navigation (Hidden) -->
+    <nav class="dashboard-nav" style="display: none;">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-graduation-cap"></i>
+                <span>AceClass</span>
+            </div>
+            
+            <div class="nav-user">
+                <div class="user-info">
+                    <span class="user-name" id="user-name">Teacher Name</span>
+                    <span class="user-plan" id="user-plan">Pro Plan</span>
+                </div>
+                <div class="user-avatar" id="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="dropdown-menu" id="user-dropdown">
+                    <a href="/pages/dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+                    <a href="/pages/settings.html"><i class="fas fa-cog"></i> Settings</a>
+                    <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+        <nav class="sidebar-nav">
+            <a href="/pages/dashboard.html" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="/pages/upload.html" class="nav-item">
+                <i class="fas fa-upload"></i>
+                <span>Upload</span>
+            </a>
+            <a href="/pages/grading.html" class="nav-item">
+                <i class="fas fa-check-double"></i>
+                <span>Grading</span>
+            </a>
+            <a href="/pages/analytics.html" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Analytics</span>
+            </a>
+            <a href="/pages/settings.html" class="nav-item active">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <div class="main-header" style="text-align: center;">
+            <h1>Settings</h1>
+            <p>Manage your account preferences and grading settings</p>
+        </div>
+
+        <!-- Settings Content -->
+        <div class="settings-container">
+            <div class="settings-list">
+                <!-- Grading Preferences -->
+                <div class="settings-section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <i class="fas fa-check-double"></i>
+                            Grading Preferences
+                        </div>
+                        <div class="section-description">Customize how AI grades your worksheets</div>
+                    </div>
+                    <div class="settings-items">
+                        <div class="settings-item">
+                            <div class="item-content">
+                                <div class="item-title">Feedback Tone</div>
+                                <div class="item-description">How AI communicates with students</div>
+                            </div>
+                            <div class="item-control">
+                                <select class="settings-select" id="feedback-tone">
+                                    <option value="encouraging" selected>Encouraging</option>
+                                    <option value="strict">Strict</option>
+                                    <option value="funny">Funny</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="settings-item">
+                            <div class="item-content">
+                                <div class="item-title">Grade Display Format</div>
+                                <div class="item-description">How grades are shown to students</div>
+                            </div>
+                            <div class="item-control">
+                                <select class="settings-select" id="grade-display">
+                                    <option value="percentage" selected>Percentage (85%)</option>
+                                    <option value="letter">Letter Grade (B+)</option>
+                                    <option value="points">Points (85/100)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="settings-item">
+                            <div class="item-content">
+                                <div class="item-title">Show Work Steps</div>
+                                <div class="item-description">Include detailed solution steps in feedback</div>
+                            </div>
+                            <div class="item-control">
+                                <div class="toggle-switch active" onclick="toggleSwitch(this)" data-setting="showWorkSteps"></div>
+                            </div>
+                        </div>
+                        <div class="settings-item">
+                            <div class="item-content">
+                                <div class="item-title">Partial Credit</div>
+                                <div class="item-description">Award points for correct methodology</div>
+                            </div>
+                            <div class="item-control">
+                                <div class="toggle-switch active" onclick="toggleSwitch(this)" data-setting="partialCredit"></div>
+                            </div>
+                        </div>
+                        <div class="settings-item">
+                            <div class="item-content">
+                                <div class="item-title">Grading Settings</div>
+                                <div class="item-description">Save your grading preferences</div>
+                            </div>
+                            <div class="item-control">
+                                <button class="settings-button primary" onclick="saveGrading()">
+                                    <i class="fas fa-save"></i>
+                                    Save Preferences
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="/js/dashboard.js"></script>
+    <script>
+        function toggleDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('active');
+        }
+        
+        document.addEventListener('click', function(event) {
+            const userAvatar = document.querySelector('.user-avatar-liquid');
+            const dropdown = document.getElementById('userDropdown');
+            
+            if (!userAvatar.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+        
+        // Toggle switch functionality
+        function toggleSwitch(element) {
+            element.classList.toggle('active');
+            const setting = element.dataset.setting;
+            const isActive = element.classList.contains('active');
+            console.log(`${setting} is now ${isActive ? 'enabled' : 'disabled'}`);
+        }
+        // --- Load user preferences (Demo Mode, no login required) ---
+document.addEventListener('DOMContentLoaded', function () {
+    loadUserPreferences();
+});
+
+async function loadUserPreferences() {
+    try {
+        console.log("Loading user preferences (demo mode)...");
+
+        // Default demo preferences (since we’re not using login)
+        const prefs = {
+            feedbackTone: 'encouraging',
+            gradeDisplay: 'percentage',
+            showWorkSteps: true,
+            partialCredit: true
+        };
+
+        // Apply demo preferences to UI
+        document.getElementById('feedback-tone').value = prefs.feedbackTone;
+        document.getElementById('grade-display').value = prefs.gradeDisplay;
+
+        const showWorkToggle = document.querySelector('[data-setting="showWorkSteps"]');
+        const partialCreditToggle = document.querySelector('[data-setting="partialCredit"]');
+
+        if (showWorkToggle) {
+            showWorkToggle.classList.toggle('active', prefs.showWorkSteps);
+        }
+        if (partialCreditToggle) {
+            partialCreditToggle.classList.toggle('active', prefs.partialCredit);
+        }
+
+        console.log("✅ Demo preferences loaded");
+    } catch (error) {
+        console.error('Error loading preferences:', error);
+    }
+}
+
+
+// --- Save grading preferences (Demo Mode, stores locally) ---
+async function saveGrading() {
+    try {
+        const feedbackTone = document.getElementById('feedback-tone').value;
+        const gradeDisplay = document.getElementById('grade-display').value;
+
+        const showWorkToggle = document.querySelector('[data-setting="showWorkSteps"]');
+        const partialCreditToggle = document.querySelector('[data-setting="partialCredit"]');
+
+        const showWorkSteps = showWorkToggle ? showWorkToggle.classList.contains('active') : true;
+        const partialCredit = partialCreditToggle ? partialCreditToggle.classList.contains('active') : true;
+
+        const preferences = {
+            feedbackTone,
+            gradeDisplay,
+            showWorkSteps,
+            partialCredit
+        };
+
+        // In demo mode, just store locally
+        localStorage.setItem('demo_preferences', JSON.stringify(preferences));
+
+        console.log('✅ Demo preferences saved:', preferences);
+        showNotification('Grading preferences saved (demo mode)', 'success');
+    } catch (error) {
+        console.error('Error saving preferences:', error);
+        showNotification('Failed to save preferences', 'error');
+    }
+}
+
+
+// --- Notification helper (works in demo) ---
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
+}
+
+      // Custom notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: var(--glass-black);
+                backdrop-filter: var(--blur-xl);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: var(--radius-xl);
+                padding: var(--spacing-4) var(--spacing-6);
+                color: var(--white);
+                font-size: var(--font-size-sm);
+                z-index: 2000;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            `;
+            
+            if (type === 'success') {
+                notification.style.borderColor = 'var(--success-color)';
+            } else if (type === 'warning') {
+                notification.style.borderColor = 'var(--warning-color)';
+            } else if (type === 'error') {
+                notification.style.borderColor = 'var(--error-color)';
+            }
+            
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: var(--spacing-2);">
+                    <i class="fas fa-${type === 'success' ? 'check' : type === 'warning' ? 'exclamation' : 'info'}"></i>
+                    ${message}
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+    </script>
+    <!-- Floating Background Elements -->
+    <div class="floating-element floating-element-1"></div>
+    <div class="floating-element floating-element-2"></div>
+    <div class="floating-element floating-element-3"></div>
+</body>
+</html>

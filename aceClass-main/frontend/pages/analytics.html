@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - CheckMate</title>
+    
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/dashboard-glass.css">
+    <link rel="stylesheet" href="/css/pages-glass.css">
+    <link rel="stylesheet" href="/css/liquid-nav.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Class Selector Section */
+        .class-selector-section {
+            margin-bottom: 2rem;
+        }
+
+        .selector-card {
+            background: var(--glass-black);
+            backdrop-filter: var(--blur-xl);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-2xl);
+            padding: var(--spacing-6);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all var(--transition-normal);
+        }
+
+        .selector-card h3 {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .selector-card h3 i {
+            margin-right: var(--spacing-2);
+            color: var(--primary-color);
+        }
+
+        .class-dropdown {
+            width: 100%;
+            background: var(--glass-black-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-3) var(--spacing-4);
+            font-size: var(--font-size-sm);
+            color: var(--white);
+            transition: all var(--transition-fast);
+            cursor: pointer;
+        }
+
+        .class-dropdown:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: var(--glass-black);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .class-dropdown option {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        /* Analytics Grid */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-6);
+            margin-bottom: var(--spacing-8);
+        }
+
+        .analytics-card {
+            background: var(--glass-black);
+            backdrop-filter: var(--blur-xl);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-2xl);
+            padding: var(--spacing-6);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all var(--transition-normal);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .analytics-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(37, 99, 235, 0.3);
+        }
+
+        .analytics-card h3 {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .analytics-card h3 i {
+            margin-right: var(--spacing-2);
+            color: var(--primary-color);
+        }
+
+        .student-dropdown {
+            width: 100%;
+            background: var(--glass-black-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-3) var(--spacing-4);
+            font-size: var(--font-size-sm);
+            color: var(--white);
+            transition: all var(--transition-fast);
+            cursor: pointer;
+            margin-bottom: var(--spacing-4);
+        }
+
+        .student-dropdown:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: var(--glass-black);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .student-dropdown option {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        /* Grade Display */
+        .grade-display {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-4);
+            text-align: center;
+        }
+
+        .grade-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .grade-details {
+            font-size: var(--font-size-sm);
+            color: var(--gray-400);
+            line-height: 1.6;
+        }
+
+        /* Class Average */
+        .class-average {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(132, 204, 22, 0.05) 100%);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-6);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .average-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #22c55e;
+            margin-bottom: var(--spacing-2);
+        }
+
+        .average-label {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        /* Performer List */
+        .performer-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .performer-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-4);
+            padding: var(--spacing-4);
+            margin-bottom: var(--spacing-3);
+            background: rgba(37, 99, 235, 0.05);
+            border: 1px solid rgba(37, 99, 235, 0.1);
+            border-radius: var(--radius-lg);
+            transition: all var(--transition-fast);
+        }
+
+        .performer-item:hover {
+            background: rgba(37, 99, 235, 0.1);
+            border-color: rgba(37, 99, 235, 0.2);
+        }
+
+        .performer-rank {
+            min-width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color), #3b82f6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            font-size: var(--font-size-lg);
+        }
+
+        .performer-info {
+            flex: 1;
+        }
+
+        .performer-name {
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: var(--spacing-1);
+        }
+
+        .performer-score {
+            font-size: var(--font-size-xs);
+            color: var(--gray-400);
+        }
+
+        .score-badge {
+            padding: var(--spacing-1) var(--spacing-3);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-xs);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .score-high {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .score-medium {
+            background: rgba(251, 146, 60, 0.2);
+            color: #fb923c;
+        }
+
+        .score-low {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        /* Support List */
+        .support-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-3);
+        }
+
+        .support-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-4);
+            background: rgba(239, 68, 68, 0.05);
+            border: 1px solid rgba(239, 68, 68, 0.1);
+            border-radius: var(--radius-lg);
+            transition: all var(--transition-fast);
+        }
+
+        .support-item:hover {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+
+        .support-info {
+            flex: 1;
+        }
+
+        .support-name {
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: var(--spacing-1);
+        }
+
+        .support-details {
+            font-size: var(--font-size-xs);
+            color: var(--gray-400);
+        }
+
+        .priority-badge {
+            padding: var(--spacing-1) var(--spacing-3);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-xs);
+            font-weight: 600;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .priority-HIGH {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .priority-MEDIUM {
+            background: rgba(251, 146, 60, 0.2);
+            color: #fb923c;
+        }
+
+        .priority-LOW {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        /* Recommendations Section */
+        .recommendations-section {
+            background: var(--glass-black);
+            backdrop-filter: var(--blur-xl);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-2xl);
+            padding: var(--spacing-6);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .recommendations-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-6);
+            padding-bottom: var(--spacing-4);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .recommendations-header h3 {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .recommendations-header h3 i {
+            margin-right: var(--spacing-2);
+            color: var(--primary-color);
+        }
+
+        .refresh-btn {
+            background: linear-gradient(135deg, var(--primary-color), #3b82f6);
+            border: none;
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-2) var(--spacing-4);
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-2);
+        }
+
+        .refresh-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .refresh-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .refresh-btn i {
+            transition: transform 0.5s ease;
+        }
+
+        .refresh-btn:disabled i {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Recommendation Topics */
+        .recommendation-topics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-4);
+            margin-bottom: var(--spacing-6);
+        }
+
+        .topic-card {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(59, 130, 246, 0.05));
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-4);
+        }
+
+        .topic-title {
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: var(--spacing-3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--spacing-2);
+        }
+
+        .topic-priority {
+            padding: var(--spacing-1) var(--spacing-2);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-xs);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .topic-priority.HIGH {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .topic-priority.MEDIUM {
+            background: rgba(251, 146, 60, 0.2);
+            color: #fb923c;
+        }
+
+        .topic-priority.LOW {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .topic-description {
+            font-size: var(--font-size-xs);
+            color: var(--gray-400);
+            margin-bottom: var(--spacing-3);
+            line-height: 1.5;
+        }
+
+        .topic-activities {
+            font-size: var(--font-size-xs);
+        }
+
+        .topic-activities strong {
+            color: var(--white);
+            display: block;
+            margin-bottom: var(--spacing-2);
+        }
+
+        .topic-activities ul {
+            list-style: disc;
+            padding-left: var(--spacing-4);
+            color: var(--gray-400);
+        }
+
+        .topic-activities li {
+            margin-bottom: var(--spacing-1);
+        }
+
+        /* Class Strategy */
+        .class-strategy {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(132, 204, 22, 0.05));
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-4);
+        }
+
+        .class-strategy h4 {
+            color: #22c55e;
+        }
+
+        .class-strategy p {
+            color: var(--gray-300);
+        }
+
+        /* No Classes State */
+        .no-classes {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-12);
+            text-align: center;
+            background: var(--glass-black);
+            backdrop-filter: var(--blur-xl);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-2xl);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .no-classes i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-4);
+            opacity: 0.5;
+        }
+
+        .no-classes h3 {
+            font-size: var(--font-size-2xl);
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .no-classes p {
+            font-size: var(--font-size-sm);
+            color: var(--gray-400);
+        }
+
+        /* Loading State */
+        #loading-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-12);
+            gap: var(--spacing-4);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .recommendation-topics {
+                grid-template-columns: 1fr;
+            }
+
+            .average-value {
+                font-size: 2rem;
+            }
+
+            .recommendations-header {
+                flex-direction: column;
+                gap: var(--spacing-4);
+                align-items: flex-start;
+            }
+
+            .refresh-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body class="dashboard-body">
+    <!-- Liquid Glass Navigation -->
+    <nav class="liquid-nav">
+        <a href="/" class="nav-brand-liquid">
+            <i class="fas fa-graduation-cap"></i>
+            <span>CheckMate</span>
+        </a>
+        <div class="nav-items">
+            <a href="/pages/dashboard.html" class="nav-item-liquid">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="/pages/upload.html" class="nav-item-liquid">
+                <i class="fas fa-upload"></i>
+                <span>Upload</span>
+            </a>
+            <a href="/pages/grading.html" class="nav-item-liquid">
+                <i class="fas fa-check-double"></i>
+                <span>Grading</span>
+            </a>
+            <a href="/pages/analytics.html" class="nav-item-liquid active">
+                <i class="fas fa-chart-line"></i>
+                <span>Analytics</span>
+            </a>
+            <a href="/pages/settings.html" class="nav-item-liquid">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+        <nav class="sidebar-nav">
+            <a href="/pages/dashboard.html" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="/pages/upload.html" class="nav-item">
+                <i class="fas fa-upload"></i>
+                <span>Upload</span>
+            </a>
+            <a href="/pages/grading.html" class="nav-item">
+                <i class="fas fa-check-double"></i>
+                <span>Grading</span>
+            </a>
+            <a href="/pages/analytics.html" class="nav-item active">
+                <i class="fas fa-chart-line"></i>
+                <span>Analytics</span>
+            </a>
+            <a href="/pages/settings.html" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <div class="main-header">
+            <h1>Class Analytics & Insights</h1>
+            <p>Comprehensive performance analytics for your classes</p>
+        </div>
+
+        <!-- Class Selector -->
+        <div class="class-selector-section" id="class-selector-section" style="display: none;">
+            <div class="selector-card">
+                <h3><i class="fas fa-chalkboard-teacher"></i> Select Class</h3>
+                <select class="class-dropdown" id="class-selector" onchange="loadClassData()">
+                    <option value="">Choose a class to view analytics...</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading-state" class="empty-state" style="display: none;">
+            <div class="loading-spinner"></div>
+            <p>Loading analytics data...</p>
+        </div>
+
+        <!-- No Classes State -->
+        <div id="no-classes-state" class="no-classes" style="display: none;">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <h3>No Classes Found</h3>
+            <p>Create some classes and upload worksheets to see analytics.</p>
+        </div>
+
+        <!-- Selected Class Content -->
+        <div id="selected-class-content" style="display: none;">
+            <!-- Selected class analytics will be dynamically inserted here -->
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script>
+        let analyticsData = null;
+        let selectedClassData = null;
+        let currentTeacherId = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get teacherId from localStorage, or use default for testing
+            currentTeacherId = localStorage.getItem('teacherId') || '671a0b5f2f5a0c3d12345678';
+            console.log('Using teacherId:', currentTeacherId);
+            loadAnalytics();
+            // Start background polling so analytics reflect newly graded worksheets
+            startAutoRefresh();
+        });
+
+        // Polling helpers to auto-refresh analytics without interrupting the user
+        let _analyticsAutoRefreshHandle = null;
+        function startAutoRefresh(intervalMs = 10000) {
+            stopAutoRefresh();
+            _analyticsAutoRefreshHandle = setInterval(() => {
+                pollAnalytics();
+            }, intervalMs);
+        }
+
+        function stopAutoRefresh() {
+            if (_analyticsAutoRefreshHandle) {
+                clearInterval(_analyticsAutoRefreshHandle);
+                _analyticsAutoRefreshHandle = null;
+            }
+        }
+
+        async function pollAnalytics() {
+            try {
+                // Fetch analytics silently (no loading UI)
+                const url = `/api/analytics/classes?teacherId=${encodeURIComponent(currentTeacherId)}`;
+                const response = await fetch(url);
+                if (!response.ok) return; // don't disturb UI on failure
+
+                const data = await response.json();
+                // If classes changed, update selector; otherwise keep selection
+                const prevClasses = analyticsData?.classes?.map(c => c.classId).join(',') || '';
+                const newClasses = data?.classes?.map(c => c.classId).join(',') || '';
+
+                analyticsData = data;
+
+                const selector = document.getElementById('class-selector');
+                const selectedValue = selector ? selector.value : null;
+
+                if (!selector || !document.getElementById('class-selector-section')) return;
+
+                // Update selector options if content changed
+                if (prevClasses !== newClasses) {
+                    setupClassSelector(analyticsData);
+                    // Restore previous selection if still available
+                    if (selectedValue) selector.value = selectedValue;
+                }
+
+                // If a class is selected, refresh its shown data
+                if (selectedValue) {
+                    const selectedClassData = analyticsData.classes.find(c => c.classId === selectedValue);
+                    if (selectedClassData) {
+                        renderSelectedClass(selectedClassData);
+                        // refresh student grades quietly
+                        loadStudentGrades(selectedValue);
+                    }
+                }
+            } catch (e) {
+                // silent fail; polling will retry
+                console.debug('pollAnalytics error (ignored):', e?.message || e);
+            }
+        }
+
+        async function loadAnalytics() {
+            try {
+                showLoading(true);
+
+                // Fetch analytics with teacherId as query param
+                const url = `/api/analytics/classes?teacherId=${encodeURIComponent(currentTeacherId)}`;
+                console.log('Fetching analytics from:', url);
+                
+                const response = await fetch(url);
+                if (!response.ok) {
+                    const error = await response.text();
+                    console.error('API error:', error);
+                    throw new Error('Failed to load analytics');
+                }
+
+                analyticsData = await response.json();
+                console.log('Analytics data loaded:', analyticsData);
+                setupClassSelector(analyticsData);
+
+            } catch (error) {
+                console.error('Error loading analytics:', error);
+                showError('Failed to load analytics data: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function setupClassSelector(data) {
+            if (!data.classes || data.classes.length === 0) {
+                document.getElementById('no-classes-state').style.display = 'block';
+                return;
+            }
+
+            document.getElementById('class-selector-section').style.display = 'block';
+            const selector = document.getElementById('class-selector');
+            selector.innerHTML = '<option value="">Choose a class to view analytics...</option>' +
+                data.classes.map(c => `<option value="${c.classId}">${c.className} (${c.subject} • Grade ${c.gradeLevel})</option>`).join('');
+        }
+
+        function loadClassData() {
+            const selector = document.getElementById('class-selector');
+            const selectedClassId = selector.value;
+
+            if (!selectedClassId) {
+                document.getElementById('selected-class-content').style.display = 'none';
+                return;
+            }
+
+            selectedClassData = analyticsData.classes.find(c => c.classId === selectedClassId);
+            if (selectedClassData) {
+                renderSelectedClass(selectedClassData);
+                loadStudentGrades(selectedClassData.classId);
+            }
+        }
+
+        function renderSelectedClass(classData) {
+            const content = document.getElementById('selected-class-content');
+            content.style.display = 'block';
+            content.innerHTML = renderClassSection(classData);
+        }
+
+        function renderClassSection(classData) {
+            return `
+            <div class="class-section">
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <h3><i class="fas fa-user-graduate"></i> Student Grades</h3>
+                        <select class="student-dropdown" id="student-dropdown-${classData.classId}" onchange="showStudentGrade('${classData.classId}')">
+                            <option value="">Select a student...</option>
+                        </select>
+                        <div id="grade-display-${classData.classId}" class="grade-display" style="display: none;">
+                            <div class="grade-value">--</div>
+                            <div class="grade-details">Select a student to see their grade</div>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card">
+                        <div class="class-average">
+                            <div class="average-value">${classData.metrics.averageScore}%</div>
+                            <div class="average-label">Average Class Score</div>
+                            <div style="font-size: 14px; margin-top: 8px; opacity: 0.8;">
+                                ${classData.metrics.totalPointsEarned}/${classData.metrics.totalPoints} total points
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card">
+                        <h3><i class="fas fa-trophy"></i> Top Performers</h3>
+                        ${classData.topPerformers.length > 0 ? `
+                            <ul class="performer-list">
+                                ${classData.topPerformers.map(student => `
+                                    <li class="performer-item">
+                                        <div class="performer-rank">${student.rank}</div>
+                                        <div class="performer-info">
+                                            <div class="performer-name">${student.studentName}</div>
+                                            <div class="performer-score">${student.totalWorksheets} worksheets</div>
+                                        </div>
+                                        <span class="score-badge score-high">${student.averageScore}% (${student.grade})</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        ` : `<div class="empty-state"><i class="fas fa-trophy"></i><p>No performance data available</p></div>`}
+                    </div>
+
+                    <div class="analytics-card">
+                        <h3><i class="fas fa-hands-helping"></i> Students Needing Support</h3>
+                        ${classData.studentsNeedingSupport.length > 0 ? `
+                            <div class="support-list">
+                                ${classData.studentsNeedingSupport.map(student => `
+                                    <div class="support-item">
+                                        <div class="support-info">
+                                            <div class="support-name">${student.studentName}</div>
+                                            <div class="support-details">${student.totalWorksheets} worksheets • ${student.averageScore}% average</div>
+                                        </div>
+                                        <span class="priority-badge priority-${student.priority.toUpperCase()}">${student.priority.toUpperCase()}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : `<div class="empty-state"><i class="fas fa-hands-helping"></i><p>All students performing well!</p></div>`}
+                    </div>
+                </div>
+
+                <div class="recommendations-section">
+                    <div class="recommendations-header">
+                        <h3><i class="fas fa-robot"></i> AI-Powered Recommendations</h3>
+                        <button class="refresh-btn" onclick="refreshRecommendations('${classData.classId}', '${classData.className}')" id="refresh-btn-${classData.classId}">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                    <div id="recommendations-${classData.classId}">
+                        <p style="opacity: 0.8;">Click refresh to generate AI recommendations for this class.</p>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        async function loadStudentGrades(classId) {
+            try {
+                const response = await fetch(`/api/analytics/classes/${classId}/student-grades?teacherId=${encodeURIComponent(currentTeacherId)}`);
+                if (!response.ok) throw new Error('Failed to load student grades');
+
+                const data = await response.json();
+                const dropdown = document.getElementById(`student-dropdown-${classId}`);
+
+                dropdown.innerHTML = '<option value="">Select a student...</option>' +
+                    data.students.map(student =>
+                        `<option value="${JSON.stringify({
+                            name: student.studentName,
+                            points: student.totalPointsEarned,
+                            total: student.totalPoints,
+                            percentage: student.percentage,
+                            grade: student.letterGrade,
+                            worksheets: student.worksheetCount
+                        }).replace(/"/g, '&quot;')}">${student.studentName}</option>`
+                    ).join('');
+            } catch (error) {
+                console.error('Error loading student grades:', error);
+            }
+        }
+
+        function showStudentGrade(classId) {
+            const dropdown = document.getElementById(`student-dropdown-${classId}`);
+            const gradeDisplay = document.getElementById(`grade-display-${classId}`);
+
+            if (dropdown.value) {
+                const studentData = JSON.parse(dropdown.value.replace(/&quot;/g, '"'));
+
+                gradeDisplay.style.display = 'block';
+                gradeDisplay.innerHTML = `
+                    <div class="grade-value">${studentData.percentage}% (${studentData.grade})</div>
+                    <div class="grade-details">
+                        ${studentData.points}/${studentData.total} points earned<br>
+                        ${studentData.worksheets} worksheets completed
+                    </div>
+                `;
+            } else {
+                gradeDisplay.style.display = 'none';
+            }
+        }
+
+        async function refreshRecommendations(classId, className) {
+            const refreshBtn = document.getElementById(`refresh-btn-${classId}`);
+            const recommendationsDiv = document.getElementById(`recommendations-${classId}`);
+
+            try {
+                refreshBtn.disabled = true;
+                refreshBtn.innerHTML = '<i class="fas fa-spinner" style="animation: spin 0.8s linear infinite;"></i> Generating...';
+
+                recommendationsDiv.innerHTML = '<p style="opacity: 0.8;"><div class="loading-spinner" style="display: inline-block; margin-right: 8px;"></div>Analyzing class performance and generating recommendations...</p>';
+
+                const response = await fetch(`/api/analytics/classes/${classId}/ai-recommendations?teacherId=${encodeURIComponent(currentTeacherId)}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                if (!response.ok) throw new Error('Failed to generate recommendations');
+
+                const data = await response.json();
+                renderRecommendations(recommendationsDiv, data.recommendations);
+
+            } catch (error) {
+                console.error('Error generating recommendations:', error);
+                recommendationsDiv.innerHTML = '<p style="color: #ffcccc;">Failed to generate recommendations. Please try again.</p>';
+            } finally {
+                refreshBtn.disabled = false;
+                refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh';
+            }
+        }
+
+        function renderRecommendations(container, recommendations) {
+            if (!recommendations || (!recommendations.topics && !recommendations.classStrategy)) {
+                container.innerHTML = '<p style="opacity: 0.8;">No recommendations available.</p>';
+                return;
+            }
+
+            container.innerHTML = `
+                ${recommendations.topics && recommendations.topics.length > 0 ? `
+                    <div class="recommendation-topics">
+                        ${recommendations.topics.map(topic => `
+                            <div class="topic-card">
+                                <div class="topic-title">
+                                    ${topic.topic}
+                                    <span class="topic-priority ${topic.priority.toLowerCase()}">${topic.priority}</span>
+                                </div>
+                                <div class="topic-description">${topic.description}</div>
+                                <div class="topic-activities">
+                                    <strong>Suggested Activities:</strong>
+                                    <ul>
+                                        ${(topic.suggestedActivities || []).map(activity => `<li>${activity}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : ''}
+
+                ${recommendations.classStrategy ? `
+                    <div class="class-strategy">
+                        <h4 style="margin: 0 0 12px 0;"><i class="fas fa-lightbulb"></i> Class Strategy</h4>
+                        <p style="margin: 0; opacity: 0.9;">${recommendations.classStrategy}</p>
+                    </div>
+                ` : ''}
+            `;
+        }
+
+        function showLoading(show) {
+            document.getElementById('loading-state').style.display = show ? 'block' : 'none';
+            if (show) {
+                document.getElementById('class-selector-section').style.display = 'none';
+                document.getElementById('selected-class-content').style.display = 'none';
+                document.getElementById('no-classes-state').style.display = 'none';
+            }
+        }
+
+        function showError(message) {
+            document.getElementById('class-selector-section').style.display = 'none';
+            document.getElementById('selected-class-content').style.display = 'none';
+            document.getElementById('no-classes-state').innerHTML = `
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Error Loading Analytics</h3>
+                <p>${message}</p>
+                <button onclick="loadAnalytics()" style="margin-top: 16px; padding: 8px 16px; background: #667eea; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                    Try Again
+                </button>
+            `;
+            document.getElementById('no-classes-state').style.display = 'block';
+        }
+    </script>
+
+    <!-- Floating Background Elements -->
+    <div class="floating-element floating-element-1"></div>
+    <div class="floating-element floating-element-2"></div>
+    <div class="floating-element floating-element-3"></div>
+</body>
+</html>
