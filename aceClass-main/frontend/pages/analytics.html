@@ -655,6 +655,12 @@
             transform: translateY(-1px);
         }
 
+        .worksheet-action-btn.worksheet-delete-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.5);
+            color: #ef4444;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .analytics-grid {
@@ -1243,6 +1249,9 @@
                             <button class="worksheet-action-btn" onclick="downloadWorksheet('${worksheet._id}')" title="Download">
                                 <i class="fas fa-download"></i>
                             </button>
+                            <button class="worksheet-action-btn worksheet-delete-btn" onclick="deleteWorksheet('${worksheet._id}', '${classId}')" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </div>
                     </div>
                 `;
@@ -1263,6 +1272,51 @@
 
         function downloadWorksheet(worksheetId) {
             window.open(`/api/upload/file/${worksheetId}`, '_blank');
+        }
+
+        async function deleteWorksheet(worksheetId, classId) {
+            // Find the worksheet to get its name
+            const allWorksheets = window[`worksheets_${classId}`] || [];
+            const worksheet = allWorksheets.find(w => w._id === worksheetId);
+            const worksheetName = worksheet ? worksheet.originalName : 'this worksheet';
+
+            // Confirm deletion
+            if (!confirm(`Are you sure you want to delete "${worksheetName}"? This action cannot be undone.`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/upload/worksheet/${worksheetId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    // Remove from worksheets arrays
+                    window[`worksheets_${classId}`] = allWorksheets.filter(w => w._id !== worksheetId);
+
+                    // Reapply filters and refresh display
+                    filterWorksheets(classId);
+
+                    // Update count
+                    const countEl = document.getElementById(`worksheet-count-${classId}`);
+                    if (countEl) {
+                        const newCount = window[`worksheets_${classId}`].length;
+                        countEl.textContent = `${newCount} worksheet${newCount !== 1 ? 's' : ''}`;
+                    }
+
+                    // Show success message
+                    alert('Worksheet deleted successfully');
+
+                    // Reload analytics to update metrics
+                    loadAnalytics();
+                } else {
+                    const error = await response.json();
+                    alert(`Failed to delete worksheet: ${error.error || 'Unknown error'}`);
+                }
+            } catch (error) {
+                console.error('Error deleting worksheet:', error);
+                alert('Failed to delete worksheet. Please try again.');
+            }
         }
 
         function escapeHtml(text) {

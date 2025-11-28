@@ -211,4 +211,30 @@ router.get('/worksheets', async (req, res) => {
   }
 });
 
+// --- DELETE WORKSHEET (no auth) ---
+router.delete('/worksheet/:worksheetId', async (req, res) => {
+  try {
+    const db = await getDb();
+    const worksheets = db.collection('worksheets');
+    const id = safeObjectId(req.params.worksheetId);
+
+    if (!id) {
+      console.error("Invalid worksheetId received:", req.params.worksheetId);
+      return res.status(400).json({ error: "Invalid worksheet ID" });
+    }
+
+    const result = await worksheets.deleteOne({ _id: id });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ error: 'Worksheet not found' });
+    }
+
+    console.log(`✅ Worksheet ${req.params.worksheetId} deleted successfully.`);
+    res.json({ message: 'Worksheet deleted successfully', worksheetId: req.params.worksheetId });
+  } catch (err) {
+    console.error('Delete error:', err);
+    res.status(500).json({ error: 'Failed to delete worksheet', details: err.message });
+  }
+});
+
 export default router;

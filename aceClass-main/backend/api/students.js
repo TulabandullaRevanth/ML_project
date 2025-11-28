@@ -25,11 +25,11 @@ router.get('/', async (req, res) => {
     const { search, classId, grade, page = 1, limit = 50 } = req.query;
     const db = await getDb();
     const students = db.collection('students');
-    
+
     const filter = {
-  teacherId: new ObjectId("671a0b5f2f5a0c3d12345678"),
-  isActive: true
-};
+      teacherId: new ObjectId("671a0b5f2f5a0c3d12345678"),
+      isActive: true
+    };
 
     if (classId) filter.classes = new ObjectId(classId);
     if (grade) filter.grade = grade;
@@ -120,15 +120,7 @@ router.post('/', async (req, res) => {
     const db = await getDb();
     const students = db.collection('students');
 
-    // Check for duplicate name
-    const existing = await students.findOne({
-      name: { $regex: new RegExp(`^${studentData.name.trim()}$`, 'i') },
-      isActive: true
-    });
-
-    if (existing)
-      return res.status(409).json({ error: 'A student with this name already exists' });
-
+    // No duplicate check - allow multiple students with the same name
     const newStudent = createStudentDocument(null, studentData);
     const result = await students.insertOne(newStudent);
     newStudent._id = result.insertedId;

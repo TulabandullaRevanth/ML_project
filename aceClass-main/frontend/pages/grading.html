@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grading - aceclass</title>
-    
+
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/dashboard.css">
     <link rel="stylesheet" href="/css/dashboard-glass.css">
     <link rel="stylesheet" href="/css/pages-glass.css">
     <link rel="stylesheet" href="/css/liquid-nav.css">
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body class="dashboard-body">
     <!-- Liquid Glass Navigation -->
     <nav class="liquid-nav">
@@ -24,7 +26,7 @@
             <i class="fas fa-graduation-cap"></i>
             <span>aceclass</span>
         </a>
-        
+
         <div class="nav-items">
             <a href="/pages/dashboard.html" class="nav-item-liquid">
                 <i class="fas fa-home"></i>
@@ -47,7 +49,7 @@
                 <span>Settings</span>
             </a>
         </div>
-        
+
         <div class="nav-user-liquid">
             <div class="user-info-liquid">
                 <div class="user-name-liquid">Teacher Name</div>
@@ -68,7 +70,7 @@
             </div>
         </div>
     </nav>
-    
+
     <!-- Old Navigation (Hidden) -->
     <nav class="dashboard-nav" style="display: none;">
         <div class="nav-container">
@@ -76,7 +78,7 @@
                 <i class="fas fa-graduation-cap"></i>
                 <span>aceclass</span>
             </div>
-            
+
             <div class="nav-user">
                 <div class="user-info">
                     <span class="user-name" id="user-name">Teacher Name</span>
@@ -136,36 +138,42 @@
                             <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="liquid-dropdown-menu">
-                            <div class="liquid-dropdown-item" data-dropdown="status-dropdown" data-text="All Status" data-value="">All Status</div>
-                            <div class="liquid-dropdown-item" data-dropdown="status-dropdown" data-text="Graded" data-value="graded">Graded</div>
-                            <div class="liquid-dropdown-item" data-dropdown="status-dropdown" data-text="Processing" data-value="processing">Processing</div>
-                            <div class="liquid-dropdown-item" data-dropdown="status-dropdown" data-text="Error" data-value="error">Error</div>
+                            <div class="liquid-dropdown-item" data-dropdown="status-dropdown" data-text="All Status"
+                                data-value="">All Status</div>
+                            <div class="liquid-dropdown-item" data-dropdown="status-dropdown" data-text="Graded"
+                                data-value="graded">Graded</div>
+                            <div class="liquid-dropdown-item" data-dropdown="status-dropdown" data-text="Processing"
+                                data-value="processing">Processing</div>
+                            <div class="liquid-dropdown-item" data-dropdown="status-dropdown" data-text="Error"
+                                data-value="error">Error</div>
                         </div>
                     </div>
-                    
+
                     <div class="liquid-dropdown" id="subject-dropdown">
                         <button class="liquid-dropdown-button" data-dropdown="subject-dropdown">
                             <span id="subject-selected">All Subjects</span>
                             <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="liquid-dropdown-menu" id="subject-dropdown-menu">
-                            <div class="liquid-dropdown-item" data-dropdown="subject-dropdown" data-text="All Subjects" data-value="">All Subjects</div>
+                            <div class="liquid-dropdown-item" data-dropdown="subject-dropdown" data-text="All Subjects"
+                                data-value="">All Subjects</div>
                             <!-- Subject options will be populated dynamically -->
-                            </div>
-                            </div>
-                            
-                            <div class="liquid-dropdown" id="class-dropdown">
-                                <button class="liquid-dropdown-button" data-dropdown="class-dropdown">
-                                    <span id="class-selected">All Classes</span>
-                                    <i class="fas fa-chevron-down"></i>
-                                </button>
-                                <div class="liquid-dropdown-menu" id="class-dropdown-menu">
-                                    <div class="liquid-dropdown-item" data-dropdown="class-dropdown" data-text="All Classes" data-value="">All
-                                        Classes</div>
-                                    <!-- Class options will be populated dynamically -->
                         </div>
                     </div>
-                    
+
+                    <div class="liquid-dropdown" id="class-dropdown">
+                        <button class="liquid-dropdown-button" data-dropdown="class-dropdown">
+                            <span id="class-selected">All Classes</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="liquid-dropdown-menu" id="class-dropdown-menu">
+                            <div class="liquid-dropdown-item" data-dropdown="class-dropdown" data-text="All Classes"
+                                data-value="">All
+                                Classes</div>
+                            <!-- Class options will be populated dynamically -->
+                        </div>
+                    </div>
+
                     <input type="text" id="student-search" class="liquid-input" placeholder="Search by student name...">
                 </div>
             </div>
@@ -195,7 +203,7 @@
                         <span class="results-count" id="results-count">0 worksheets</span>
                     </div>
                 </div>
-                
+
                 <div class="grading-list" id="grading-list">
                     <div class="empty-state">
                         <i class="fas fa-clipboard-check"></i>
@@ -214,7 +222,7 @@
                 <h2>Review Worksheet</h2>
                 <button class="modal-close" onclick="closeReviewModal()">&times;</button>
             </div>
-            
+
             <div class="modal-body">
                 <div class="review-layout">
                     <div class="worksheet-view">
@@ -226,7 +234,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="grading-panel">
                         <div class="grade-summary">
                             <h3>Grade Summary</h3>
@@ -235,14 +243,14 @@
                                 <!-- Breakdown will be populated dynamically -->
                             </div>
                         </div>
-                        
+
                         <div class="feedback-section">
                             <h3>AI-Generated Feedback</h3>
                             <div class="feedback-content" id="modal-feedback">
                                 <!-- Feedback will be populated dynamically -->
                             </div>
                         </div>
-                        
+
                         <div class="grade-actions">
                             <button class="btn btn-outline" onclick="editGrade()">Edit Grade</button>
                             <button class="btn btn-primary" onclick="approveGrade()">Approve Grade</button>
@@ -256,52 +264,52 @@
     <!-- Scripts -->
     <script src="/js/dashboard.js"></script>
     <script>
-            // Global state for grading page
-            let currentWorksheets = [];
-            let filteredWorksheets = [];
-            let currentFilters = {
-                status: '',
-                subject: '',
-                class: '',
-                search: ''
-            };
-            let allClasses = [];
-            let allSubjects = [];
-            
-            // Wait for DOM to load
-            document.addEventListener('DOMContentLoaded', function() {
+        // Global state for grading page
+        let currentWorksheets = [];
+        let filteredWorksheets = [];
+        let currentFilters = {
+            status: '',
+            subject: '',
+            class: '',
+            search: ''
+        };
+        let allClasses = [];
+        let allSubjects = [];
+
+        // Wait for DOM to load
+        document.addEventListener('DOMContentLoaded', function () {
             console.log('DOM loaded, initializing grading page...');
 
-             // 🔹 Skipping authentication (demo mode)
+            // 🔹 Skipping authentication (demo mode)
             console.log('Running in demo mode — skipping authentication check.');
 
             // Initialize dropdowns, event listeners, and load data
             setupDropdowns();
             setupEventListeners();
             loadInitialData();
-});
+        });
 
 
-                // Setup dropdown functionality
-                function setupDropdowns() {
+        // Setup dropdown functionality
+        function setupDropdowns() {
             // Global dropdown functions
-            window.toggleLiquidDropdown = function(dropdownId) {
+            window.toggleLiquidDropdown = function (dropdownId) {
                 console.log('toggleLiquidDropdown called with:', dropdownId);
                 const dropdown = document.getElementById(dropdownId);
                 if (!dropdown) {
                     console.error('Dropdown not found:', dropdownId);
                     return;
                 }
-                
+
                 const isActive = dropdown.classList.contains('active');
-                
+
                 // Close all other dropdowns first
                 document.querySelectorAll('.liquid-dropdown').forEach(d => {
                     if (d !== dropdown) {
                         d.classList.remove('active');
                     }
                 });
-                
+
                 // Toggle current dropdown
                 if (isActive) {
                     dropdown.classList.remove('active');
@@ -309,29 +317,29 @@
                     dropdown.classList.add('active');
                 }
             };
-            
-            window.selectDropdownItem = function(dropdownId, displayText, value) {
+
+            window.selectDropdownItem = function (dropdownId, displayText, value) {
                 console.log('selectDropdownItem called:', dropdownId, displayText, value);
                 const dropdown = document.getElementById(dropdownId);
                 if (!dropdown) {
                     console.error('Dropdown not found:', dropdownId);
                     return;
                 }
-                
+
                 // Find and update the selected element
                 let selectedElement = dropdown.querySelector('[id$="-selected"]');
                 if (!selectedElement) {
                     selectedElement = dropdown.querySelector('#' + dropdownId.replace('-dropdown', '-selected'));
                 }
-                
+
                 if (selectedElement) {
                     selectedElement.textContent = displayText;
                 } else {
                     console.error('Selected element not found in dropdown:', dropdownId);
                 }
-                
+
                 dropdown.classList.remove('active');
-                
+
                 // Update filters based on dropdown type
                 const filterType = dropdownId.replace('-dropdown', '');
                 if (currentFilters.hasOwnProperty(filterType)) {
@@ -339,59 +347,59 @@
                     applyFilters();
                 }
             };
-            
+
             // Add event listeners to all dropdown buttons
             document.querySelectorAll('.liquid-dropdown-button').forEach(button => {
                 const dropdownId = button.getAttribute('data-dropdown');
                 if (dropdownId) {
-                    button.addEventListener('click', function(e) {
+                    button.addEventListener('click', function (e) {
                         e.preventDefault();
                         e.stopPropagation();
                         window.toggleLiquidDropdown(dropdownId);
                     });
                 }
             });
-            
+
             // Add event listeners to dropdown items using event delegation
             document.addEventListener('click', function (e) {
                 if (e.target.classList.contains('liquid-dropdown-item')) {
                     e.preventDefault();
                     e.stopPropagation();
-                    
+
                     const dropdownId = e.target.getAttribute('data-dropdown');
                     const displayText = e.target.getAttribute('data-text');
                     const value = e.target.getAttribute('data-value');
-                    
+
                     if (dropdownId && displayText !== null) {
                         window.selectDropdownItem(dropdownId, displayText, value || '');
                     }
                 }
             });
-            }
+        }
 
-            // Setup event listeners
-            function setupEventListeners() {
-                // Search input
-                const studentSearch = document.getElementById('student-search');
-                studentSearch.addEventListener('input', function (e) {
-                    currentFilters.search = e.target.value.trim();
-                    applyFilters();
-                });
+        // Setup event listeners
+        function setupEventListeners() {
+            // Search input
+            const studentSearch = document.getElementById('student-search');
+            studentSearch.addEventListener('input', function (e) {
+                currentFilters.search = e.target.value.trim();
+                applyFilters();
+            });
 
 
 
-        // Close dropdowns when clicking outside
+            // Close dropdowns when clicking outside
             document.addEventListener('click', function (event) {
-            if (!event.target.closest('.liquid-dropdown')) {
-                document.querySelectorAll('.liquid-dropdown').forEach(d => d.classList.remove('active'));
-            }
-        });
-            }
+                if (!event.target.closest('.liquid-dropdown')) {
+                    document.querySelectorAll('.liquid-dropdown').forEach(d => d.classList.remove('active'));
+                }
+            });
+        }
 
-                    // Load initial data
+        // Load initial data
         async function loadInitialData() {
             showLoading(true);
-            
+
             try {
                 // Load classes and worksheets in parallel
                 const [classesData, worksheetsData] = await Promise.all([
@@ -404,21 +412,21 @@
 
                 allClasses = classesData || [];
                 currentWorksheets = worksheetsData || [];
-                
+
                 console.log('Data loaded successfully:', {
                     classCount: allClasses.length,
                     worksheetCount: currentWorksheets.length
                 });
-                
+
                 populateClassDropdown();
                 populateSubjectDropdown();
                 applyFilters();
-                
+
                 // Show helpful message if no data
                 if (allClasses.length === 0 && currentWorksheets.length === 0) {
                     showError('No data found. Try uploading some worksheets first, or check if you are logged in correctly.');
                 }
-                
+
             } catch (error) {
                 console.error('Error loading initial data:', error);
                 showError(`Failed to load data: ${error.message}. Please check your connection and refresh the page.`);
@@ -427,66 +435,66 @@
             }
         }
         // --- Fetch Classes (no auth required) ---
-async function fetchClasses() {
-    try {
-        console.log('Fetching classes (demo mode)...');
+        async function fetchClasses() {
+            try {
+                console.log('Fetching classes (demo mode)...');
 
-        // Fetch directly from the backend without Authorization headers
-        const response = await fetch('/api/classes/');
+                // Fetch directly from the backend without Authorization headers
+                const response = await fetch('/api/classes/');
 
-        console.log('Classes API response status:', response.status);
+                console.log('Classes API response status:', response.status);
 
-        if (response.ok) {
-            const data = await response.json();
-            console.log('Classes API response:', data);
-            return data.classes || [];
-        } else {
-            const errorText = await response.text();
-            console.error('Failed to fetch classes:', response.status, errorText);
-            return [];
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Classes API response:', data);
+                    return data.classes || [];
+                } else {
+                    const errorText = await response.text();
+                    console.error('Failed to fetch classes:', response.status, errorText);
+                    return [];
+                }
+            } catch (error) {
+                console.error('Error fetching classes:', error);
+                return [];
+            }
         }
-    } catch (error) {
-        console.error('Error fetching classes:', error);
-        return [];
-    }
-}
 
-// --- Fetch Worksheets (no auth required) ---
-async function fetchWorksheets() {
-    try {
-        console.log('Fetching worksheets (demo mode)...');
+        // --- Fetch Worksheets (no auth required) ---
+        async function fetchWorksheets() {
+            try {
+                console.log('Fetching worksheets (demo mode)...');
 
-        // Fetch directly without requiring login token
-        const response = await fetch('/api/upload/worksheets?limit=100');
+                // Fetch directly without requiring login token
+                const response = await fetch('/api/upload/worksheets?limit=100');
 
-        console.log('Worksheets API response status:', response.status);
+                console.log('Worksheets API response status:', response.status);
 
-        if (response.ok) {
-            const data = await response.json();
-            console.log('Worksheets API response:', data);
-            return data.worksheets || [];
-        } else {
-            const errorText = await response.text();
-            console.error('Failed to fetch worksheets:', response.status, errorText);
-            return [];
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Worksheets API response:', data);
+                    return data.worksheets || [];
+                } else {
+                    const errorText = await response.text();
+                    console.error('Failed to fetch worksheets:', response.status, errorText);
+                    return [];
+                }
+            } catch (error) {
+                console.error('Error fetching worksheets:', error);
+                return [];
+            }
         }
-    } catch (error) {
-        console.error('Error fetching worksheets:', error);
-        return [];
-    }
-}
 
 
-    // Fetch classes from API
-    async function populateClassDropdown() {
-        console.log('Populating class dropdown with:', allClasses); // Debug log
-        const menu = document.getElementById('class-dropdown-menu');
+        // Fetch classes from API
+        async function populateClassDropdown() {
+            console.log('Populating class dropdown with:', allClasses); // Debug log
+            const menu = document.getElementById('class-dropdown-menu');
 
-        if (!menu) {
-            console.error('Class dropdown menu not found!');
+            if (!menu) {
+                console.error('Class dropdown menu not found!');
                 return;
             }
-            
+
             // Keep the "All Classes" option
             const allOption = menu.querySelector('[data-value=""]');
             menu.innerHTML = '';
@@ -514,48 +522,48 @@ async function fetchWorksheets() {
             }
         }
 
-                    // Populate subject dropdown
-                    function populateSubjectDropdown() {
-                        const menu = document.getElementById('subject-dropdown-menu');
+        // Populate subject dropdown
+        function populateSubjectDropdown() {
+            const menu = document.getElementById('subject-dropdown-menu');
 
-                        // Extract unique subjects from worksheets
-                        const subjects = new Set();
-                        currentWorksheets.forEach(worksheet => {
-                            if (worksheet.metadata?.subject) {
-                                subjects.add(worksheet.metadata.subject);
-                            }
-                        });
+            // Extract unique subjects from worksheets
+            const subjects = new Set();
+            currentWorksheets.forEach(worksheet => {
+                if (worksheet.metadata?.subject) {
+                    subjects.add(worksheet.metadata.subject);
+                }
+            });
 
-                        allSubjects = Array.from(subjects).sort();
+            allSubjects = Array.from(subjects).sort();
 
-                        // Keep the "All Subjects" option
-                        const allOption = menu.querySelector('[data-value=""]');
-                        menu.innerHTML = '';
-                        if (allOption) {
-                            menu.appendChild(allOption);
-                        } else {
-                            menu.innerHTML = '<div class="liquid-dropdown-item" data-dropdown="subject-dropdown" data-text="All Subjects" data-value="">All Subjects</div>';
-                        }
+            // Keep the "All Subjects" option
+            const allOption = menu.querySelector('[data-value=""]');
+            menu.innerHTML = '';
+            if (allOption) {
+                menu.appendChild(allOption);
+            } else {
+                menu.innerHTML = '<div class="liquid-dropdown-item" data-dropdown="subject-dropdown" data-text="All Subjects" data-value="">All Subjects</div>';
+            }
 
-                        // Add subject options
-                        allSubjects.forEach(subject => {
-                            const option = document.createElement('div');
-                            option.className = 'liquid-dropdown-item';
-                            option.setAttribute('data-dropdown', 'subject-dropdown');
-                            option.setAttribute('data-text', subject);
-                            option.setAttribute('data-value', subject);
-                            option.textContent = subject;
-                            menu.appendChild(option);
-                        });
-                    }
+            // Add subject options
+            allSubjects.forEach(subject => {
+                const option = document.createElement('div');
+                option.className = 'liquid-dropdown-item';
+                option.setAttribute('data-dropdown', 'subject-dropdown');
+                option.setAttribute('data-text', subject);
+                option.setAttribute('data-value', subject);
+                option.textContent = subject;
+                menu.appendChild(option);
+            });
+        }
 
-                    // Apply current filters
-                    function applyFilters() {
-                        filteredWorksheets = currentWorksheets.filter(worksheet => {
-                            // Status filter
-                            if (currentFilters.status && worksheet.status !== currentFilters.status) {
-                                return false;
-                            }
+        // Apply current filters
+        function applyFilters() {
+            filteredWorksheets = currentWorksheets.filter(worksheet => {
+                // Status filter
+                if (currentFilters.status && worksheet.status !== currentFilters.status) {
+                    return false;
+                }
 
                 // Subject filter
                 if (currentFilters.subject && worksheet.metadata?.subject !== currentFilters.subject) {
@@ -581,32 +589,32 @@ async function fetchWorksheets() {
                 return true;
             });
 
-                    displayWorksheets();
-                    updateResultsCount();
-                }
+            displayWorksheets();
+            updateResultsCount();
+        }
 
-                // Display worksheets in the list
-                function displayWorksheets() {
-                    const gradingList = document.getElementById('grading-list');
+        // Display worksheets in the list
+        function displayWorksheets() {
+            const gradingList = document.getElementById('grading-list');
 
-                    if (filteredWorksheets.length === 0) {
-                        gradingList.innerHTML = `
+            if (filteredWorksheets.length === 0) {
+                gradingList.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-clipboard-check"></i>
                         <p>No worksheets found</p>
                         <span>Try adjusting your filters or search terms</span>
                     </div>
                 `;
-                        return;
-                    }
+                return;
+            }
 
-                    gradingList.innerHTML = filteredWorksheets.map(worksheet => {
-                        const score = worksheet.gradingResults?.totalScore || 0;
-                        const statusClass = getStatusClass(worksheet.status);
-                        const statusIcon = getStatusIcon(worksheet.status);
-                        const className = getClassNameById(worksheet.classId);
+            gradingList.innerHTML = filteredWorksheets.map(worksheet => {
+                const score = worksheet.gradingResults?.totalScore || 0;
+                const statusClass = getStatusClass(worksheet.status);
+                const statusIcon = getStatusIcon(worksheet.status);
+                const className = getClassNameById(worksheet.classId);
 
-                        return `
+                return `
                     <div class="grading-item" data-worksheet-id="${worksheet._id}">
                         <div class="item-checkbox">
                             <input type="checkbox" id="cb-${worksheet._id}">
@@ -657,79 +665,82 @@ async function fetchWorksheets() {
                             <button class="btn-action" onclick="downloadWorksheet('${worksheet._id}')" title="Download">
                                 <i class="fas fa-download"></i>
                             </button>
+                            <button class="btn-action btn-delete" onclick="deleteWorksheet('${worksheet._id}')" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </div>
                     </div>
                 `;
-                    }).join('');
+            }).join('');
         }
 
-            // Helper functions
-            function getStatusClass(status) {
-                switch (status) {
-                    case 'graded': return 'status-completed';
-                    case 'processing': return 'status-processing';
-                    case 'error': return 'status-error';
-                    default: return 'status-pending';
-                }
+        // Helper functions
+        function getStatusClass(status) {
+            switch (status) {
+                case 'graded': return 'status-completed';
+                case 'processing': return 'status-processing';
+                case 'error': return 'status-error';
+                default: return 'status-pending';
             }
+        }
 
-            function getStatusIcon(status) {
-                switch (status) {
-                    case 'graded': return 'fas fa-check';
-                    case 'processing': return 'fas fa-spinner fa-spin';
-                    case 'error': return 'fas fa-exclamation-triangle';
-                    default: return 'fas fa-clock';
-                }
+        function getStatusIcon(status) {
+            switch (status) {
+                case 'graded': return 'fas fa-check';
+                case 'processing': return 'fas fa-spinner fa-spin';
+                case 'error': return 'fas fa-exclamation-triangle';
+                default: return 'fas fa-clock';
             }
+        }
 
-            function getScoreClass(score) {
-                if (score >= 90) return 'score-a';
-                if (score >= 80) return 'score-b';
-                if (score >= 70) return 'score-c';
-                if (score >= 60) return 'score-d';
-                return 'score-f';
+        function getScoreClass(score) {
+            if (score >= 90) return 'score-a';
+            if (score >= 80) return 'score-b';
+            if (score >= 70) return 'score-c';
+            if (score >= 60) return 'score-d';
+            return 'score-f';
+        }
+
+        function getClassNameById(classId) {
+            if (!classId) return 'No Class';
+            const classObj = allClasses.find(c => c._id === classId);
+            return classObj ? classObj.name : 'Unknown Class';
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'Unknown';
+            const date = new Date(dateString);
+            return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function updateResultsCount() {
+            const count = filteredWorksheets.length;
+            const countElement = document.getElementById('results-count');
+            countElement.textContent = `${count} worksheet${count !== 1 ? 's' : ''}`;
+        }
+
+        function showLoading(show) {
+            const loadingState = document.getElementById('loading-state');
+            const gradingSection = document.getElementById('grading-section');
+
+            if (show) {
+                loadingState.style.display = 'block';
+                gradingSection.style.display = 'none';
+            } else {
+                loadingState.style.display = 'none';
+                gradingSection.style.display = 'block';
             }
+        }
 
-            function getClassNameById(classId) {
-                if (!classId) return 'No Class';
-                const classObj = allClasses.find(c => c._id === classId);
-                return classObj ? classObj.name : 'Unknown Class';
-            }
-
-            function formatDate(dateString) {
-                if (!dateString) return 'Unknown';
-                const date = new Date(dateString);
-                return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            }
-
-            function escapeHtml(text) {
-                const div = document.createElement('div');
-                div.textContent = text;
-                return div.innerHTML;
-            }
-
-            function updateResultsCount() {
-                const count = filteredWorksheets.length;
-                const countElement = document.getElementById('results-count');
-                countElement.textContent = `${count} worksheet${count !== 1 ? 's' : ''}`;
-            }
-
-            function showLoading(show) {
-                const loadingState = document.getElementById('loading-state');
-                const gradingSection = document.getElementById('grading-section');
-
-                if (show) {
-                    loadingState.style.display = 'block';
-                    gradingSection.style.display = 'none';
-                } else {
-                    loadingState.style.display = 'none';
-                    gradingSection.style.display = 'block';
-                }
-            }
-
-                    function showError(message) {
+        function showError(message) {
             console.error(message);
-            
+
             // Show error in the grading list
             const gradingList = document.getElementById('grading-list');
             if (gradingList) {
@@ -744,257 +755,296 @@ async function fetchWorksheets() {
                     </div>
                 `;
             }
-            
+
             // Also show alert as fallback
             alert(message);
         }
 
-            // Action functions
-            function reviewWorksheet(worksheetId) {
-                // Navigate to the grading interface
-                window.location.href = `/pages/grading-split.html?worksheet=${worksheetId}`;
+        // Action functions
+        function reviewWorksheet(worksheetId) {
+            // Navigate to the grading interface
+            window.location.href = `/pages/grading-split.html?worksheet=${worksheetId}`;
+        }
+
+        function editWorksheet(worksheetId) {
+            // Navigate to the grading interface in edit mode
+            window.location.href = `/pages/grading-split.html?worksheet=${worksheetId}&mode=edit`;
+        }
+
+        function downloadWorksheet(worksheetId) {
+            const token = localStorage.getItem('gradeflow_token');
+            window.open(`/api/upload/file/${worksheetId}?token=${token}`, '_blank');
+        }
+
+        async function deleteWorksheet(worksheetId) {
+            // Find the worksheet to get its name
+            const worksheet = currentWorksheets.find(w => w._id === worksheetId);
+            const worksheetName = worksheet ? worksheet.originalName : 'this worksheet';
+
+            // Confirm deletion
+            if (!confirm(`Are you sure you want to delete "${worksheetName}"? This action cannot be undone.`)) {
+                return;
             }
 
-            function editWorksheet(worksheetId) {
-                // Navigate to the grading interface in edit mode
-                window.location.href = `/pages/grading-split.html?worksheet=${worksheetId}&mode=edit`;
-            }
+            try {
+                const response = await fetch(`/api/upload/worksheet/${worksheetId}`, {
+                    method: 'DELETE'
+                });
 
-            function downloadWorksheet(worksheetId) {
-                const token = localStorage.getItem('gradeflow_token');
-                window.open(`/api/upload/file/${worksheetId}?token=${token}`, '_blank');
-            }
+                if (response.ok) {
+                    // Remove from current worksheets array
+                    currentWorksheets = currentWorksheets.filter(w => w._id !== worksheetId);
 
+                    // Reapply filters and refresh display
+                    applyFilters();
 
-
-                // Modal functions
-                function closeReviewModal() {
-                    document.getElementById('review-modal').style.display = 'none';
+                    // Show success message
+                    alert('Worksheet deleted successfully');
+                } else {
+                    const error = await response.json();
+                    alert(`Failed to delete worksheet: ${error.error || 'Unknown error'}`);
                 }
-
-                function editGrade() {
-                    alert('Edit grade functionality not implemented yet');
-                }
-
-            function approveGrade() {
-                alert('Approve grade functionality not implemented yet');
+            } catch (error) {
+                console.error('Error deleting worksheet:', error);
+                alert('Failed to delete worksheet. Please try again.');
             }
+        }
+
+        // Modal functions
+        function closeReviewModal() {
+            document.getElementById('review-modal').style.display = 'none';
+        }
+
+        function editGrade() {
+            alert('Edit grade functionality not implemented yet');
+        }
+
+        function approveGrade() {
+            alert('Approve grade functionality not implemented yet');
+        }
     </script>
-<!-- Additional CSS for grading list items -->
-<style>
-    .grading-item {
-        display: flex;
-        align-items: center;
-        padding: 16px;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        margin-bottom: 12px;
-        background: white;
-        transition: all 0.2s ease;
-    }
-
-    .grading-item:hover {
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        border-color: #d1d5db;
-    }
-
-    .item-checkbox {
-        margin-right: 16px;
-    }
-
-    .item-info {
-        flex: 1;
-        min-width: 0;
-    }
-
-    .item-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 8px;
-    }
-
-    .worksheet-name {
-        font-size: 16px;
-        font-weight: 600;
-        margin: 0;
-        color: #1f2937;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .status-badge {
-        padding: 4px 8px;
-        border-radius: 12px;
-        font-size: 12px;
-        font-weight: 500;
-        text-transform: capitalize;
-    }
-
-    .status-completed {
-        background: #dcfce7;
-        color: #166534;
-    }
-
-    .status-processing {
-        background: #fef3c7;
-        color: #d97706;
-    }
-
-    .status-error {
-        background: #fef2f2;
-        color: #dc2626;
-    }
-
-    .status-pending {
-        background: #f3f4f6;
-        color: #374151;
-    }
-
-    .item-details {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 8px;
-    }
-
-    .detail-item {
-        display: flex;
-        align-items: center;
-        font-size: 14px;
-        color: #6b7280;
-    }
-
-    .detail-item i {
-        margin-right: 8px;
-        width: 16px;
-        color: #9ca3af;
-    }
-
-    .item-score {
-        margin: 0 16px;
-    }
-
-    .score-display {
-        font-size: 24px;
-        font-weight: bold;
-        padding: 8px 12px;
-        border-radius: 8px;
-        text-align: center;
-        min-width: 60px;
-    }
-
-    .score-a {
-        background: #dcfce7;
-        color: #166534;
-    }
-
-    .score-b {
-        background: #dbeafe;
-        color: #1d4ed8;
-    }
-
-    .score-c {
-        background: #fef3c7;
-        color: #d97706;
-    }
-
-    .score-d {
-        background: #fed7aa;
-        color: #ea580c;
-    }
-
-    .score-f {
-        background: #fef2f2;
-        color: #dc2626;
-    }
-
-    .item-actions {
-        display: flex;
-        gap: 8px;
-    }
-
-    .btn-action {
-        padding: 8px;
-        border: 1px solid #d1d5db;
-        border-radius: 6px;
-        background: white;
-        color: #6b7280;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-
-    .btn-action:hover {
-        background: #f3f4f6;
-        color: #374151;
-    }
-
-    .results-count {
-        font-size: 14px;
-        color: #6b7280;
-        margin-right: 16px;
-    }
-
-    /* Filter controls styling */
-    .filter-controls {
-        display: flex;
-        gap: 12px;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-
-    .liquid-input {
-        padding: 8px 12px;
-        border: 1px solid #d1d5db;
-        border-radius: 6px;
-        font-size: 14px;
-        min-width: 200px;
-    }
-
-    .liquid-input:focus {
-        outline: none;
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
+    <!-- Additional CSS for grading list items -->
+    <style>
         .grading-item {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 12px;
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            background: white;
+            transition: all 0.2s ease;
+        }
+
+        .grading-item:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-color: #d1d5db;
+        }
+
+        .item-checkbox {
+            margin-right: 16px;
+        }
+
+        .item-info {
+            flex: 1;
+            min-width: 0;
         }
 
         .item-header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .worksheet-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0;
+            color: #1f2937;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+
+        .status-completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-processing {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-error {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .status-pending {
+            background: #f3f4f6;
+            color: #374151;
         }
 
         .item-details {
-            grid-template-columns: 1fr;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 8px;
         }
 
-        .item-score,
+        .detail-item {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .detail-item i {
+            margin-right: 8px;
+            width: 16px;
+            color: #9ca3af;
+        }
+
+        .item-score {
+            margin: 0 16px;
+        }
+
+        .score-display {
+            font-size: 24px;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 60px;
+        }
+
+        .score-a {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .score-b {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .score-c {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .score-d {
+            background: #fed7aa;
+            color: #ea580c;
+        }
+
+        .score-f {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
         .item-actions {
-            align-self: flex-end;
+            display: flex;
+            gap: 8px;
         }
 
+        .btn-action {
+            padding: 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .btn-action.btn-delete:hover {
+            background: #fef2f2;
+            color: #dc2626;
+            border-color: #fca5a5;
+        }
+
+        .results-count {
+            font-size: 14px;
+            color: #6b7280;
+            margin-right: 16px;
+        }
+
+        /* Filter controls styling */
         .filter-controls {
-            flex-direction: column;
-            align-items: stretch;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
         .liquid-input {
-            min-width: auto;
-            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            min-width: 200px;
         }
-    }
-</style>
+
+        .liquid-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .grading-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .item-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .item-details {
+                grid-template-columns: 1fr;
+            }
+
+            .item-score,
+            .item-actions {
+                align-self: flex-end;
+            }
+
+            .filter-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .liquid-input {
+                min-width: auto;
+                width: 100%;
+            }
+        }
+    </style>
 
     <!-- Floating Background Elements -->
     <div class="floating-element floating-element-1"></div>
     <div class="floating-element floating-element-2"></div>
     <div class="floating-element floating-element-3"></div>
 </body>
+
 </html>
