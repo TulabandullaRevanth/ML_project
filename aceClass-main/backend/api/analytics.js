@@ -1,3 +1,4 @@
+
 import express from 'express';
 import { ObjectId } from 'mongodb';
 import { getDb } from '../services/database.js';
@@ -15,9 +16,15 @@ router.get('/classes', async (req, res) => {
         // No auth: teacherId passed as query param for testing
         const teacherId = req.query.teacherId || 'test-teacher';
 
-        // Fetch all classes (ObjectId teacherId)
+        // Fetch all classes (ObjectId teacherId or 'demo-user')
         const classes = await db.collection('classes').find({
-            teacherId: ObjectId.isValid(teacherId) ? new ObjectId(teacherId) : teacherId,
+            teacherId: {
+                $in: [
+                    teacherId,
+                    ObjectId.isValid(teacherId) ? new ObjectId(teacherId) : null,
+                    'demo-user'
+                ].filter(Boolean)
+            },
             isActive: true
         }).toArray();
 
@@ -31,9 +38,9 @@ router.get('/classes', async (req, res) => {
             const classId = classDoc._id;
             const classIdString = classId.toString();
 
-            // Fetch worksheets - handle both ObjectId and string classId
+            // Fetch worksheets - handle both ObjectId and string classId, and include demo-user
             const worksheets = await db.collection('worksheets').find({
-                teacherId: teacherId,
+                teacherId: { $in: [teacherId, 'demo-user'] },
                 $or: [
                     { classId: classId },
                     { classId: classIdString }
@@ -42,22 +49,23 @@ router.get('/classes', async (req, res) => {
             }).toArray();
 
             // Fetch students for this class (accept teacherId/classId as string or ObjectId)
-const students = await db.collection('students').find({
-    teacherId: {
-        $in: [
-            teacherId,
-            ObjectId.isValid(teacherId) ? new ObjectId(teacherId) : null
-        ]
-    },
-    classes: {
-        $in: [
-            classId,                 // ObjectId (from classDoc._id)
-            classId.toString(),      // string form
-            ObjectId.isValid(classId) ? new ObjectId(classId) : null
-        ]
-    },
-    isActive: true
-}).toArray();
+            const students = await db.collection('students').find({
+                teacherId: {
+                    $in: [
+                        teacherId,
+                        ObjectId.isValid(teacherId) ? new ObjectId(teacherId) : null,
+                        'demo-user'
+                    ]
+                },
+                classes: {
+                    $in: [
+                        classId,                 // ObjectId (from classDoc._id)
+                        classId.toString(),      // string form
+                        ObjectId.isValid(classId) ? new ObjectId(classId) : null
+                    ]
+                },
+                isActive: true
+            }).toArray();
 
 
             // Calculate student performance
@@ -67,7 +75,8 @@ const students = await db.collection('students').find({
 
             for (const student of students) {
                 const studentWorksheets = worksheets.filter(
-                    w => w.studentId?.toString() === student._id?.toString()
+                    w => w.studentId?.toString() === student._id?.toString() ||
+                        (w.studentName && w.studentName.toLowerCase() === student.name.toLowerCase())
                 );
 
                 if (studentWorksheets.length > 0) {
@@ -165,8 +174,8 @@ const students = await db.collection('students').find({
                         student.averageScore < 60
                             ? 'high'
                             : student.averageScore < 70
-                            ? 'medium'
-                            : 'low'
+                                ? 'medium'
+                                : 'low'
                 }));
 
             const gradeDistribution = {
@@ -193,10 +202,10 @@ const students = await db.collection('students').find({
                     completionRate:
                         students.length > 0
                             ? Math.round(
-                                  (studentPerformance.filter(s => s.totalWorksheets > 0).length /
-                                      students.length) *
-                                      100
-                              )
+                                (studentPerformance.filter(s => s.totalWorksheets > 0).length /
+                                    students.length) *
+                                100
+                            )
                             : 0
                 },
                 studentPerformance,
@@ -225,7 +234,7 @@ const students = await db.collection('students').find({
 // ================================
 router.get('/classes/:classId/student-grades', async (req, res) => {
     try {
-        const db = await getDb(); 
+        const db = await getDb();
         const classId = req.params.classId;
         const teacherId = req.query.teacherId || 'test-teacher';
 
@@ -238,22 +247,23 @@ router.get('/classes/:classId/student-grades', async (req, res) => {
         }
 
         // Robust students query: supports string/ObjectId classId + teacherId
-const students = await db.collection('students').find({
-    teacherId: {
-        $in: [
-            teacherId,
-            ObjectId.isValid(teacherId) ? new ObjectId(teacherId) : null
-        ]
-    },
-    classes: {
-        $in: [
-            classId,
-            classId.toString(),
-            ObjectId.isValid(classId) ? new ObjectId(classId) : null
-        ]
-    },
-    isActive: true
-}).toArray();
+        const students = await db.collection('students').find({
+            teacherId: {
+                $in: [
+                    teacherId,
+                    ObjectId.isValid(teacherId) ? new ObjectId(teacherId) : null,
+                    'demo-user'
+                ]
+            },
+            classes: {
+                $in: [
+                    classId,
+                    classId.toString(),
+                    ObjectId.isValid(classId) ? new ObjectId(classId) : null
+                ]
+            },
+            isActive: true
+        }).toArray();
 
 
         const studentGrades = [];
@@ -261,12 +271,15 @@ const students = await db.collection('students').find({
         for (const student of students) {
             const classIdObj = new ObjectId(classId);
             const worksheets = await db.collection('worksheets').find({
-                teacherId,
+                teacherId: { $in: [teacherId, 'demo-user'] },
                 $or: [
                     { classId: classIdObj },
                     { classId: classId }
                 ],
-                studentId: student._id,
+                $or: [
+                    { studentId: student._id },
+                    { studentName: student.name }
+                ],
                 status: 'graded'
             }).toArray();
 
@@ -337,6 +350,76 @@ const students = await db.collection('students').find({
 });
 
 // ================================
+// 🔹 Get detailed worksheets for a specific class
+// ================================
+router.get('/classes/:classId/worksheets', async (req, res) => {
+    try {
+        const db = await getDb();
+        const classId = req.params.classId;
+        const teacherId = req.query.teacherId || 'test-teacher';
+
+        const classDoc = await db.collection('classes').findOne({
+            _id: new ObjectId(classId)
+        });
+
+        if (!classDoc) {
+            return res.status(404).json({ error: 'Class not found' });
+        }
+
+        // Fetch all worksheets for this class
+        const worksheets = await db.collection('worksheets').find({
+            teacherId: { $in: [teacherId, 'demo-user'] },
+            $or: [
+                { classId: new ObjectId(classId) },
+                { classId: classId }
+            ],
+            status: 'graded'
+        }).sort({ completedAt: -1 }).toArray();
+
+        // Enrich worksheet data with calculated fields
+        const enrichedWorksheets = worksheets.map(worksheet => {
+            let score = 0;
+            if (worksheet.gradingResults) {
+                if (worksheet.gradingResults.totalScore !== undefined) {
+                    score = worksheet.gradingResults.totalScore;
+                } else if (worksheet.gradingResults.totalPoints && worksheet.gradingResults.totalPointsEarned !== undefined) {
+                    score = Math.round((worksheet.gradingResults.totalPointsEarned / worksheet.gradingResults.totalPoints) * 100);
+                }
+            }
+
+            return {
+                _id: worksheet._id.toString(),
+                originalName: worksheet.originalName,
+                studentName: worksheet.studentName,
+                studentId: worksheet.studentId?.toString(),
+                className: classDoc.name,
+                subject: worksheet.metadata?.subject || 'Unknown',
+                grade: worksheet.metadata?.grade || 'N/A',
+                assignment: worksheet.metadata?.assignment || 'Untitled',
+                completedAt: worksheet.completedAt,
+                uploadDate: worksheet.uploadDate,
+                status: worksheet.status,
+                score: score,
+                letterGrade: calculateLetterGrade(score),
+                gradingResults: worksheet.gradingResults,
+                feedback: worksheet.feedback,
+                mimeType: worksheet.mimeType
+            };
+        });
+
+        res.json({
+            classId,
+            className: classDoc.name,
+            totalWorksheets: enrichedWorksheets.length,
+            worksheets: enrichedWorksheets
+        });
+    } catch (error) {
+        console.error('❌ Worksheets detail error:', error);
+        res.status(500).json({ error: 'Failed to get worksheet details' });
+    }
+});
+
+// ================================
 // 🔹 Generate AI recommendations for a class
 // ================================
 router.post('/classes/:classId/ai-recommendations', async (req, res) => {
@@ -355,7 +438,7 @@ router.post('/classes/:classId/ai-recommendations', async (req, res) => {
         }
 
         const worksheets = await db.collection('worksheets').find({
-            teacherId: teacherId,
+            teacherId: { $in: [teacherId, 'demo-user'] },
             $or: [
                 { classId: new ObjectId(classId) },
                 { classId: classId }
@@ -364,7 +447,13 @@ router.post('/classes/:classId/ai-recommendations', async (req, res) => {
         }).toArray();
 
         const students = await db.collection('students').find({
-            teacherId: ObjectId.isValid(teacherId) ? new ObjectId(teacherId) : teacherId,
+            teacherId: {
+                $in: [
+                    teacherId,
+                    ObjectId.isValid(teacherId) ? new ObjectId(teacherId) : null,
+                    'demo-user'
+                ].filter(Boolean)
+            },
             classes: new ObjectId(classId),
             isActive: true
         }).toArray();
@@ -376,7 +465,8 @@ router.post('/classes/:classId/ai-recommendations', async (req, res) => {
 
         for (const student of students) {
             const studentWorksheets = worksheets.filter(
-                w => w.studentId?.toString() === student._id?.toString()
+                w => w.studentId?.toString() === student._id?.toString() ||
+                    (w.studentName && w.studentName.toLowerCase() === student.name.toLowerCase())
             );
 
             if (studentWorksheets.length > 0) {

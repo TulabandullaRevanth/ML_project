@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analytics - CheckMate</title>
-    
+
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/dashboard.css">
     <link rel="stylesheet" href="/css/dashboard-glass.css">
     <link rel="stylesheet" href="/css/pages-glass.css">
     <link rel="stylesheet" href="/css/liquid-nav.css">
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -384,8 +385,13 @@
         }
 
         @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         /* Recommendation Topics */
@@ -514,23 +520,139 @@
             color: var(--gray-400);
         }
 
-        /* Loading State */
-        #loading-state {
+        /* Worksheet Details Section */
+        .worksheet-details-section {
+            margin-top: var(--spacing-8);
+        }
+
+        .worksheet-filters {
+            display: flex;
+            gap: var(--spacing-4);
+            margin-bottom: var(--spacing-6);
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .worksheet-search {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .worksheet-list {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: var(--spacing-12);
             gap: var(--spacing-4);
         }
 
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-top: 3px solid var(--primary-color);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+        .worksheet-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-4);
+            padding: var(--spacing-4);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-xl);
+            transition: all var(--transition-normal);
+        }
+
+        .worksheet-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(37, 99, 235, 0.3);
+        }
+
+        .worksheet-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .worksheet-name {
+            font-size: var(--font-size-base);
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: var(--spacing-2);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .worksheet-meta {
+            display: flex;
+            gap: var(--spacing-4);
+            flex-wrap: wrap;
+            font-size: var(--font-size-xs);
+            color: var(--gray-400);
+        }
+
+        .worksheet-meta-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-1);
+        }
+
+        .worksheet-meta-item i {
+            opacity: 0.7;
+        }
+
+        .worksheet-score {
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .worksheet-score-value {
+            font-size: var(--font-size-xl);
+            font-weight: 700;
+            padding: var(--spacing-2) var(--spacing-3);
+            border-radius: var(--radius-lg);
+            display: inline-block;
+        }
+
+        .worksheet-score-value.score-a {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .worksheet-score-value.score-b {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .worksheet-score-value.score-c {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .worksheet-score-value.score-d {
+            background: rgba(249, 115, 22, 0.2);
+            color: #f97316;
+        }
+
+        .worksheet-score-value.score-f {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .worksheet-actions {
+            display: flex;
+            gap: var(--spacing-2);
+        }
+
+        .worksheet-action-btn {
+            padding: var(--spacing-2) var(--spacing-3);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-md);
+            color: var(--white);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            font-size: var(--font-size-sm);
+        }
+
+        .worksheet-action-btn:hover {
+            background: rgba(37, 99, 235, 0.2);
+            border-color: rgba(37, 99, 235, 0.5);
+            transform: translateY(-1px);
         }
 
         /* Responsive */
@@ -560,6 +682,7 @@
         }
     </style>
 </head>
+
 <body class="dashboard-body">
     <!-- Liquid Glass Navigation -->
     <nav class="liquid-nav">
@@ -628,9 +751,9 @@
         <div class="class-selector-section" id="class-selector-section" style="display: none;">
             <div class="selector-card">
                 <h3><i class="fas fa-chalkboard-teacher"></i> Select Class</h3>
-                <select class="class-dropdown" id="class-selector" onchange="loadClassData()">
-                    <option value="">Choose a class to view analytics...</option>
-                </select>
+                <div id="class-selector-container">
+                    <!-- Liquid Dropdown will be inserted here -->
+                </div>
             </div>
         </div>
 
@@ -663,10 +786,91 @@
             // Get teacherId from localStorage, or use default for testing
             currentTeacherId = localStorage.getItem('teacherId') || '671a0b5f2f5a0c3d12345678';
             console.log('Using teacherId:', currentTeacherId);
+
+            setupDropdowns();
             loadAnalytics();
             // Start background polling so analytics reflect newly graded worksheets
             startAutoRefresh();
         });
+
+        // --- Liquid Dropdown Logic ---
+        function setupDropdowns() {
+            window.toggleLiquidDropdown = function (dropdownId) {
+                const dropdown = document.getElementById(dropdownId);
+                if (!dropdown) return;
+
+                const isActive = dropdown.classList.contains('active');
+
+                // Close all other dropdowns
+                document.querySelectorAll('.liquid-dropdown').forEach(d => {
+                    if (d !== dropdown) d.classList.remove('active');
+                });
+
+                if (isActive) {
+                    dropdown.classList.remove('active');
+                } else {
+                    dropdown.classList.add('active');
+                }
+            };
+
+            window.selectDropdownItem = function (dropdownId, displayText, value) {
+                const dropdown = document.getElementById(dropdownId);
+                if (!dropdown) return;
+
+                // Update selected text
+                const selectedElement = dropdown.querySelector('.liquid-dropdown-button span');
+                if (selectedElement) selectedElement.textContent = displayText;
+
+                dropdown.classList.remove('active');
+
+                // Trigger change events based on dropdown ID
+                if (dropdownId === 'class-selector-dropdown') {
+                    handleClassSelection(value);
+                } else if (dropdownId.startsWith('student-dropdown-')) {
+                    const classId = dropdownId.replace('student-dropdown-', '');
+                    handleStudentSelection(classId, value);
+                }
+            };
+
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function (event) {
+                if (!event.target.closest('.liquid-dropdown')) {
+                    document.querySelectorAll('.liquid-dropdown').forEach(d => d.classList.remove('active'));
+                }
+            });
+        }
+
+        function handleClassSelection(classId) {
+            if (!classId) {
+                document.getElementById('selected-class-content').style.display = 'none';
+                return;
+            }
+
+            selectedClassData = analyticsData.classes.find(c => c.classId === classId);
+            if (selectedClassData) {
+                renderSelectedClass(selectedClassData);
+                loadStudentGrades(selectedClassData.classId);
+            }
+        }
+
+        function handleStudentSelection(classId, studentDataJson) {
+            const gradeDisplay = document.getElementById(`grade-display-${classId}`);
+
+            if (studentDataJson) {
+                const studentData = JSON.parse(studentDataJson.replace(/&quot;/g, '"'));
+
+                gradeDisplay.style.display = 'block';
+                gradeDisplay.innerHTML = `
+                    <div class="grade-value">${studentData.percentage}% (${studentData.grade})</div>
+                    <div class="grade-details">
+                        ${studentData.points}/${studentData.total} points earned<br>
+                        ${studentData.worksheets} worksheets completed
+                    </div>
+                `;
+            } else {
+                gradeDisplay.style.display = 'none';
+            }
+        }
 
         // Polling helpers to auto-refresh analytics without interrupting the user
         let _analyticsAutoRefreshHandle = null;
@@ -698,25 +902,29 @@
 
                 analyticsData = data;
 
-                const selector = document.getElementById('class-selector');
-                const selectedValue = selector ? selector.value : null;
+                // We need to check the currently selected value from the DOM
+                const dropdownBtn = document.querySelector('#class-selector-dropdown .liquid-dropdown-button span');
+                const currentSelectionText = dropdownBtn ? dropdownBtn.textContent : '';
 
-                if (!selector || !document.getElementById('class-selector-section')) return;
-
-                // Update selector options if content changed
+                // If content changed, re-render selector options
                 if (prevClasses !== newClasses) {
                     setupClassSelector(analyticsData);
-                    // Restore previous selection if still available
-                    if (selectedValue) selector.value = selectedValue;
+                    // Attempt to restore selection by text if possible, or reset
+                    // For now, simpler to just let it reset or keep if ID matches. 
+                    // Since we replaced the select with a custom div, state management is a bit different.
+                    // We'll skip complex restoration for this iteration to avoid UI jumping.
                 }
 
                 // If a class is selected, refresh its shown data
-                if (selectedValue) {
-                    const selectedClassData = analyticsData.classes.find(c => c.classId === selectedValue);
-                    if (selectedClassData) {
-                        renderSelectedClass(selectedClassData);
-                        // refresh student grades quietly
-                        loadStudentGrades(selectedValue);
+                if (selectedClassData) {
+                    const updatedClassData = analyticsData.classes.find(c => c.classId === selectedClassData.classId);
+                    if (updatedClassData) {
+                        // Only re-render if data actually changed to avoid flickering
+                        if (JSON.stringify(updatedClassData) !== JSON.stringify(selectedClassData)) {
+                            selectedClassData = updatedClassData;
+                            renderSelectedClass(selectedClassData);
+                            loadStudentGrades(selectedClassData.classId);
+                        }
                     }
                 }
             } catch (e) {
@@ -732,7 +940,7 @@
                 // Fetch analytics with teacherId as query param
                 const url = `/api/analytics/classes?teacherId=${encodeURIComponent(currentTeacherId)}`;
                 console.log('Fetching analytics from:', url);
-                
+
                 const response = await fetch(url);
                 if (!response.ok) {
                     const error = await response.text();
@@ -759,31 +967,43 @@
             }
 
             document.getElementById('class-selector-section').style.display = 'block';
-            const selector = document.getElementById('class-selector');
-            selector.innerHTML = '<option value="">Choose a class to view analytics...</option>' +
-                data.classes.map(c => `<option value="${c.classId}">${c.className} (${c.subject} • Grade ${c.gradeLevel})</option>`).join('');
-        }
+            const container = document.getElementById('class-selector-container');
 
-        function loadClassData() {
-            const selector = document.getElementById('class-selector');
-            const selectedClassId = selector.value;
+            // Build Liquid Dropdown HTML
+            let optionsHtml = `
+                <div class="liquid-dropdown-item" onclick="selectDropdownItem('class-selector-dropdown', 'Choose a class...', '')">
+                    Choose a class...
+                </div>
+            `;
 
-            if (!selectedClassId) {
-                document.getElementById('selected-class-content').style.display = 'none';
-                return;
-            }
+            data.classes.forEach(c => {
+                optionsHtml += `
+                    <div class="liquid-dropdown-item" onclick="selectDropdownItem('class-selector-dropdown', '${c.className}', '${c.classId}')">
+                        ${c.className} <span style="opacity: 0.6; font-size: 0.9em; margin-left: 8px;">(${c.subject} • Grade ${c.gradeLevel})</span>
+                    </div>
+                `;
+            });
 
-            selectedClassData = analyticsData.classes.find(c => c.classId === selectedClassId);
-            if (selectedClassData) {
-                renderSelectedClass(selectedClassData);
-                loadStudentGrades(selectedClassData.classId);
-            }
+            container.innerHTML = `
+                <div class="liquid-dropdown" id="class-selector-dropdown" style="width: 100%;">
+                    <button class="liquid-dropdown-button" onclick="toggleLiquidDropdown('class-selector-dropdown')" style="width: 100%; justify-content: space-between;">
+                        <span>Choose a class...</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="liquid-dropdown-menu" style="width: 100%;">
+                        ${optionsHtml}
+                    </div>
+                </div>
+            `;
         }
 
         function renderSelectedClass(classData) {
             const content = document.getElementById('selected-class-content');
             content.style.display = 'block';
             content.innerHTML = renderClassSection(classData);
+
+            // Load worksheet details after rendering
+            loadWorksheetDetails(classData.classId);
         }
 
         function renderClassSection(classData) {
@@ -792,10 +1012,16 @@
                 <div class="analytics-grid">
                     <div class="analytics-card">
                         <h3><i class="fas fa-user-graduate"></i> Student Grades</h3>
-                        <select class="student-dropdown" id="student-dropdown-${classData.classId}" onchange="showStudentGrade('${classData.classId}')">
-                            <option value="">Select a student...</option>
-                        </select>
-                        <div id="grade-display-${classData.classId}" class="grade-display" style="display: none;">
+                        <div id="student-selector-container-${classData.classId}">
+                            <!-- Student dropdown will be inserted here -->
+                            <div class="liquid-dropdown" style="width: 100%; opacity: 0.6; pointer-events: none;">
+                                <button class="liquid-dropdown-button" style="width: 100%; justify-content: space-between;">
+                                    <span>Loading students...</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="grade-display-${classData.classId}" class="grade-display" style="display: none; margin-top: 16px;">
                             <div class="grade-value">--</div>
                             <div class="grade-details">Select a student to see their grade</div>
                         </div>
@@ -858,8 +1084,191 @@
                         <p style="opacity: 0.8;">Click refresh to generate AI recommendations for this class.</p>
                     </div>
                 </div>
+
+                <div class="worksheet-details-section">
+                    <div class="analytics-card">
+                        <div class="recommendations-header">
+                            <h3><i class="fas fa-file-alt"></i> Detailed Worksheet Performance</h3>
+                            <span id="worksheet-count-${classData.classId}" style="color: var(--gray-400); font-size: var(--font-size-sm);"></span>
+                        </div>
+                        
+                        <div class="worksheet-filters">
+                            <input type="text" 
+                                   id="worksheet-search-${classData.classId}" 
+                                   class="liquid-input worksheet-search" 
+                                   placeholder="Search by student or worksheet name..."
+                                   onkeyup="filterWorksheets('${classData.classId}')">
+                            
+                            <div class="liquid-dropdown" id="subject-filter-${classData.classId}">
+                                <button class="liquid-dropdown-button" onclick="toggleLiquidDropdown('subject-filter-${classData.classId}')">
+                                    <span id="subject-filter-selected-${classData.classId}">All Subjects</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="liquid-dropdown-menu" id="subject-filter-menu-${classData.classId}">
+                                    <div class="liquid-dropdown-item" onclick="selectDropdownItem('subject-filter-${classData.classId}', 'All Subjects', ''); filterWorksheets('${classData.classId}')">
+                                        All Subjects
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="worksheet-list-${classData.classId}" class="worksheet-list">
+                            <div class="empty-state">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <p>Loading worksheets...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             `;
+        }
+
+        async function loadWorksheetDetails(classId) {
+            try {
+                const response = await fetch(`/api/analytics/classes/${classId}/worksheets?teacherId=${encodeURIComponent(currentTeacherId)}`);
+                if (!response.ok) throw new Error('Failed to load worksheets');
+
+                const data = await response.json();
+                window[`worksheets_${classId}`] = data.worksheets;
+                window[`filteredWorksheets_${classId}`] = data.worksheets;
+
+                // Update count
+                const countEl = document.getElementById(`worksheet-count-${classId}`);
+                if (countEl) countEl.textContent = `${data.totalWorksheets} worksheets`;
+
+                // Populate subject filter
+                const subjects = [...new Set(data.worksheets.map(w => w.subject))].sort();
+                const subjectMenu = document.getElementById(`subject-filter-menu-${classId}`);
+                if (subjectMenu) {
+                    const allOption = subjectMenu.querySelector('.liquid-dropdown-item');
+                    subjectMenu.innerHTML = allOption ? allOption.outerHTML : '';
+                    subjects.forEach(subject => {
+                        const item = document.createElement('div');
+                        item.className = 'liquid-dropdown-item';
+                        item.onclick = () => {
+                            selectDropdownItem(`subject-filter-${classId}`, subject, subject);
+                            filterWorksheets(classId);
+                        };
+                        item.textContent = subject;
+                        subjectMenu.appendChild(item);
+                    });
+                }
+
+                renderWorksheets(classId);
+            } catch (error) {
+                console.error('Error loading worksheets:', error);
+                const listEl = document.getElementById(`worksheet-list-${classId}`);
+                if (listEl) {
+                    listEl.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p>Failed to load worksheets</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        function filterWorksheets(classId) {
+            const searchTerm = document.getElementById(`worksheet-search-${classId}`)?.value.toLowerCase() || '';
+            const selectedSubject = document.getElementById(`subject-filter-selected-${classId}`)?.textContent || 'All Subjects';
+
+            const allWorksheets = window[`worksheets_${classId}`] || [];
+
+            window[`filteredWorksheets_${classId}`] = allWorksheets.filter(worksheet => {
+                const matchesSearch = !searchTerm ||
+                    worksheet.studentName.toLowerCase().includes(searchTerm) ||
+                    worksheet.originalName.toLowerCase().includes(searchTerm);
+
+                const matchesSubject = selectedSubject === 'All Subjects' || worksheet.subject === selectedSubject;
+
+                return matchesSearch && matchesSubject;
+            });
+
+            renderWorksheets(classId);
+        }
+
+        function renderWorksheets(classId) {
+            const listEl = document.getElementById(`worksheet-list-${classId}`);
+            if (!listEl) return;
+
+            const worksheets = window[`filteredWorksheets_${classId}`] || [];
+
+            if (worksheets.length === 0) {
+                listEl.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-clipboard-check"></i>
+                        <p>No worksheets found</p>
+                        <span>Try adjusting your filters</span>
+                    </div>
+                `;
+                return;
+            }
+
+            listEl.innerHTML = worksheets.map(worksheet => {
+                const scoreClass = getScoreClass(worksheet.score);
+                const completedDate = worksheet.completedAt ? new Date(worksheet.completedAt).toLocaleDateString() : 'N/A';
+
+                return `
+                    <div class="worksheet-item">
+                        <div class="worksheet-info">
+                            <div class="worksheet-name">${escapeHtml(worksheet.originalName)}</div>
+                            <div class="worksheet-meta">
+                                <div class="worksheet-meta-item">
+                                    <i class="fas fa-user"></i>
+                                    <span>${escapeHtml(worksheet.studentName)}</span>
+                                </div>
+                                <div class="worksheet-meta-item">
+                                    <i class="fas fa-book"></i>
+                                    <span>${escapeHtml(worksheet.subject)}</span>
+                                </div>
+                                <div class="worksheet-meta-item">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>${completedDate}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="worksheet-score">
+                            <div class="worksheet-score-value ${scoreClass}">
+                                ${worksheet.score}%
+                            </div>
+                        </div>
+                        
+                        <div class="worksheet-actions">
+                            <button class="worksheet-action-btn" onclick="reviewWorksheet('${worksheet._id}')" title="Review">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="worksheet-action-btn" onclick="downloadWorksheet('${worksheet._id}')" title="Download">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getScoreClass(score) {
+            if (score >= 90) return 'score-a';
+            if (score >= 80) return 'score-b';
+            if (score >= 70) return 'score-c';
+            if (score >= 60) return 'score-d';
+            return 'score-f';
+        }
+
+        function reviewWorksheet(worksheetId) {
+            window.location.href = `/pages/grading-split.html?worksheet=${worksheetId}`;
+        }
+
+        function downloadWorksheet(worksheetId) {
+            window.open(`/api/upload/file/${worksheetId}`, '_blank');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
 
         async function loadStudentGrades(classId) {
@@ -868,41 +1277,48 @@
                 if (!response.ok) throw new Error('Failed to load student grades');
 
                 const data = await response.json();
-                const dropdown = document.getElementById(`student-dropdown-${classId}`);
+                const container = document.getElementById(`student-selector-container-${classId}`);
+                if (!container) return;
 
-                dropdown.innerHTML = '<option value="">Select a student...</option>' +
-                    data.students.map(student =>
-                        `<option value="${JSON.stringify({
-                            name: student.studentName,
-                            points: student.totalPointsEarned,
-                            total: student.totalPoints,
-                            percentage: student.percentage,
-                            grade: student.letterGrade,
-                            worksheets: student.worksheetCount
-                        }).replace(/"/g, '&quot;')}">${student.studentName}</option>`
-                    ).join('');
-            } catch (error) {
-                console.error('Error loading student grades:', error);
-            }
-        }
+                const dropdownId = `student-dropdown-${classId}`;
 
-        function showStudentGrade(classId) {
-            const dropdown = document.getElementById(`student-dropdown-${classId}`);
-            const gradeDisplay = document.getElementById(`grade-display-${classId}`);
-
-            if (dropdown.value) {
-                const studentData = JSON.parse(dropdown.value.replace(/&quot;/g, '"'));
-
-                gradeDisplay.style.display = 'block';
-                gradeDisplay.innerHTML = `
-                    <div class="grade-value">${studentData.percentage}% (${studentData.grade})</div>
-                    <div class="grade-details">
-                        ${studentData.points}/${studentData.total} points earned<br>
-                        ${studentData.worksheets} worksheets completed
+                let optionsHtml = `
+                    <div class="liquid-dropdown-item" onclick="selectDropdownItem('${dropdownId}', 'Select a student...', '')">
+                        Select a student...
                     </div>
                 `;
-            } else {
-                gradeDisplay.style.display = 'none';
+
+                data.students.forEach(student => {
+                    const value = JSON.stringify({
+                        name: student.studentName,
+                        points: student.totalPointsEarned,
+                        total: student.totalPoints,
+                        percentage: student.percentage,
+                        grade: student.letterGrade,
+                        worksheets: student.worksheetCount
+                    }).replace(/"/g, '&quot;');
+
+                    optionsHtml += `
+                        <div class="liquid-dropdown-item" onclick="selectDropdownItem('${dropdownId}', '${student.studentName}', '${value}')">
+                            ${student.studentName}
+                        </div>
+                    `;
+                });
+
+                container.innerHTML = `
+                    <div class="liquid-dropdown" id="${dropdownId}" style="width: 100%;">
+                        <button class="liquid-dropdown-button" onclick="toggleLiquidDropdown('${dropdownId}')" style="width: 100%; justify-content: space-between;">
+                            <span>Select a student...</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="liquid-dropdown-menu" style="width: 100%;">
+                            ${optionsHtml}
+                        </div>
+                    </div>
+                `;
+
+            } catch (error) {
+                console.error('Error loading student grades:', error);
             }
         }
 
@@ -1000,4 +1416,5 @@
     <div class="floating-element floating-element-2"></div>
     <div class="floating-element floating-element-3"></div>
 </body>
+
 </html>
